@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionWrapper from "@/components/SectionWrapper";
 import PortfolioCard from "@/components/PortfolioCard";
-import AnimatedSection from "@/components/AnimatedSection";
-import Button from "@/components/Button";
+import PageHero from "@/components/PageHero";
 
 type Category = "All" | "Web" | "Brand" | "Strategy";
 
@@ -86,72 +85,59 @@ const CATEGORIES: Category[] = ["All", "Web", "Brand", "Strategy"];
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState<Category>("All");
-  const [visibleCount, setVisibleCount] = useState(6);
 
-  const filteredProjects = useMemo(() => {
-    if (activeCategory === "All") {
-      return ALL_PROJECTS;
-    }
-    return ALL_PROJECTS.filter((project) =>
-      project.filterCategory.includes(
-        activeCategory as "Web" | "Brand" | "Strategy"
-      )
-    );
-  }, [activeCategory]);
+  const filteredProjects =
+    activeCategory === "All"
+      ? ALL_PROJECTS
+      : ALL_PROJECTS.filter((project) =>
+          project.filterCategory.includes(
+            activeCategory as "Web" | "Brand" | "Strategy"
+          )
+        );
 
   return (
     <div className="flex flex-col w-full">
-      {/* ────────────────── 1. HERO ────────────────── */}
       <SectionWrapper className="pt-12 md:pt-16 pb-8">
-        <div className="max-w-3xl space-y-4">
-          <AnimatedSection>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-[hsl(180,2%,11%)]">
-              Selected Work
-            </h1>
-          </AnimatedSection>
-          <AnimatedSection delay={0.1}>
-            <p className="text-base sm:text-lg text-[hsl(180,1%,27%)] leading-relaxed">
-              We forge digital experiences that combine industrial strength with
-              elegant functionality. Explore our recent projects across web, brand,
-              and strategy.
-            </p>
-          </AnimatedSection>
+        <PageHero
+          title="Selected Work"
+          description="We forge digital experiences that combine industrial strength with elegant functionality. Explore our recent projects across web, brand, and strategy."
+        />
 
-          {/* ────────────────── 2. FILTER PILLS ────────────────── */}
-          <AnimatedSection delay={0.2} className="pt-4">
-            <div className="flex flex-wrap gap-2.5" role="tablist" aria-label="Portfolio categories">
-              {CATEGORIES.map((category) => {
-                const isActive = activeCategory === category;
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActiveCategory(category)}
-                    className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? "bg-[hsl(180,2%,11%)] text-white shadow-xs"
-                        : "bg-white text-[hsl(180,2%,11%)] border border-[hsl(240,1%,78%)]/60 hover:bg-[hsl(0,9%,96%)] hover:border-[hsl(180,0%,46%)]"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
-            </div>
-          </AnimatedSection>
+        <div className="pt-4">
+          <div className="flex flex-wrap gap-2.5" role="tablist" aria-label="Portfolio categories">
+            {CATEGORIES.map((category) => {
+              const isActive = activeCategory === category;
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls="portfolio-grid"
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? "bg-on-surface text-white shadow-xs"
+                      : "bg-white text-on-surface border border-outline-variant/60 hover:bg-surface-container-low hover:border-outline"
+                  }`}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </SectionWrapper>
 
-      {/* ────────────────── 3. PROJECT GRID ────────────────── */}
       <SectionWrapper className="pt-0">
         <motion.div
+          id="portfolio-grid"
+          role="tabpanel"
           layout
           className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.slice(0, visibleCount).map((project, index) => (
+            {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 layout
@@ -160,7 +146,6 @@ export default function PortfolioPage() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35, delay: index * 0.05 }}
               >
-                {/* PLACEHOLDER: Replace with real case study */}
                 <PortfolioCard
                   title={project.title}
                   description={project.description}
@@ -172,19 +157,6 @@ export default function PortfolioPage() {
             ))}
           </AnimatePresence>
         </motion.div>
-
-        {/* Load More Button */}
-        {visibleCount < filteredProjects.length && (
-          <div className="pt-12 flex justify-center">
-            <Button
-              variant="outline"
-              size="md"
-              onClick={() => setVisibleCount((prev) => prev + 4)}
-            >
-              Load More Projects
-            </Button>
-          </div>
-        )}
       </SectionWrapper>
     </div>
   );

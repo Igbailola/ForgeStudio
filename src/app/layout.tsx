@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Montserrat } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -40,6 +40,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#b3390c",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,7 +56,7 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${montserrat.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-[hsl(0,20%,98%)] text-[hsl(180,2%,11%)]">
+      <body className="min-h-full flex flex-col bg-background text-on-surface">
         <Header />
         <main className="flex-1 w-full">{children}</main>
         <Footer />

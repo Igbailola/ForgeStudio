@@ -24,10 +24,10 @@ export default function StatCounter({
       transition={{ duration: 0.4, delay }}
       className={`space-y-1 ${className}`}
     >
-      <div className="font-display text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[hsl(180,2%,11%)]">
+      <div className="font-display text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-on-surface">
         {value}
       </div>
-      <div className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-[hsl(180,1%,27%)]">
+      <div className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-on-surface-variant">
         {label}
       </div>
     </motion.div>

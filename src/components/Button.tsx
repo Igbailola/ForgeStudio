@@ -2,19 +2,31 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 
-interface ButtonProps {
+type ButtonBaseProps = {
   children: React.ReactNode;
-  href?: string;
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline";
   size?: "sm" | "md" | "lg";
   className?: string;
-  onClick?: () => void;
+  icon?: React.ReactNode;
+};
+
+type LinkButtonProps = ButtonBaseProps & {
+  href: string;
+  onClick?: (e: React.MouseEvent) => void;
+  type?: never;
+  disabled?: never;
+};
+
+type ActionButtonProps = ButtonBaseProps & {
+  href?: never;
+  onClick?: (e: React.MouseEvent) => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  icon?: React.ReactNode;
-}
+};
+
+type ButtonProps = LinkButtonProps | ActionButtonProps;
 
 export default function Button({
   children,
@@ -37,25 +49,28 @@ export default function Button({
   };
 
   const variantStyles = {
-    // Secondary is the signature Forge terracotta / burnt-orange CTA
     secondary:
-      "bg-[#b3390c] hover:bg-[#9c3008] text-white shadow-sm hover:shadow active:scale-[0.98]",
+      "bg-brand hover:bg-brand-hover text-white shadow-sm hover:shadow active:scale-[0.98]",
     primary:
       "bg-[hsl(218,100%,50%)] hover:bg-[hsl(218,100%,44%)] text-white shadow-sm hover:shadow active:scale-[0.98]",
     outline:
-      "border border-[hsl(240,1%,78%)] hover:border-[hsl(180,0%,46%)] bg-white text-[hsl(180,2%,11%)] hover:bg-[hsl(0,9%,96%)] active:scale-[0.98]",
-    ghost:
-      "bg-transparent hover:bg-black/5 text-[hsl(180,2%,11%)] active:scale-[0.98]",
+      "border border-outline-variant hover:border-outline bg-white text-on-surface hover:bg-surface-container-low active:scale-[0.98]",
   };
 
   const combinedClasses = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
   if (href) {
     return (
-      <Link href={href} className={combinedClasses} onClick={onClick}>
-        <span>{children}</span>
-        {icon && <span className="inline-flex items-center">{icon}</span>}
-      </Link>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="inline-flex"
+      >
+        <Link href={href} className={combinedClasses} onClick={onClick}>
+          <span>{children}</span>
+          {icon && <span className="inline-flex items-center">{icon}</span>}
+        </Link>
+      </motion.div>
     );
   }
 

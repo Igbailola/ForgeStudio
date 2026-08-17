@@ -7,7 +7,7 @@ interface AnimatedSectionProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  direction?: "up" | "down" | "left" | "right" | "none";
+  direction?: "up" | "left" | "right";
 }
 
 export default function AnimatedSection({
@@ -18,17 +18,13 @@ export default function AnimatedSection({
 }: AnimatedSectionProps) {
   const getInitial = () => {
     switch (direction) {
-      case "up":
-        return { opacity: 0, y: 24 };
-      case "down":
-        return { opacity: 0, y: -24 };
       case "left":
         return { opacity: 0, x: -24 };
       case "right":
         return { opacity: 0, x: 24 };
-      case "none":
+      case "up":
       default:
-        return { opacity: 0 };
+        return { opacity: 0, y: 24 };
     }
   };
 
