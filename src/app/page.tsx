@@ -42,9 +42,9 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg md:text-xl text-[hsl(180,1%,27%)] max-w-2xl leading-relaxed">
-            We are an elite digital agency crafting high-end, uncompromising digital
-            products. We blend industrial strength logic with fluid, modern aesthetics
-            to elevate your brand&apos;s digital presence.
+            We are an elite digital agency crafting high-end, uncompromising
+            digital products that blend industrial-strength logic with fluid,
+            modern aesthetics to elevate your brand&apos;s digital presence.
           </p>
 
           {/* CTAs */}
@@ -58,7 +58,7 @@ export default function HomePage() {
               Let&apos;s Forge
             </Button>
             <Button href="/portfolio" variant="outline" size="lg">
-              View Work
+              View Portfolio
             </Button>
           </div>
         </AnimatedSection>
